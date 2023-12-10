@@ -28,4 +28,11 @@ function getBlogpost($id) {
     $res->execute(array($id));
     return $res->fetch();
 }
+function searchBlogposts($search)
+{
+    $query = "SELECT * FROM blogpost WHERE title LIKE ? OR subject LIKE ?";
+    $res = $this->pdo->prepare($query);
+    $res->execute(["%$search%", "%$search%"]);
+    return $res->fetchAll();
+}
 }?>

@@ -6,6 +6,5 @@ if (isset($_POST['sub'])) {
     $id = $_POST['key'];
     $b->delete($id);
 }
-
 header('Location: HomePage.php');
 ?>

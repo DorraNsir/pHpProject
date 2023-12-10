@@ -1,34 +1,29 @@
-<?php  
+<?php
 include("../controller/users.php");
- session_start();  
- $message = "";  
- try  
- {  
-      if(isset($_POST["login"]))  
-      unset($_POST['login'],$_POST['PC']);
-      $_POST['admin']=0;
-      {  
-           if(empty($_POST["username"]) || empty($_POST["password"])|| empty($_POST["email"]))  
-           {  
-                $message = '<label>All fields are required</label>';  
-           }  
-           else  
-           { 
-                $username=$_POST['username'];
-                $password=$_POST['password']=password_hash($_POST['password'],PASSWORD_DEFAULT);
-                $email=$_POST['email'];
-                $user =new Users();
-                $user->insert($username,$email,$password);
-                header("location: HomePage.php");
-                 
-           }  
-      }  
- }  
- catch(PDOException $error)  
- {  
-      $message = $error->getMessage();  
- }  
- ?>  
+session_start();
+$message = "";
+
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (empty($_POST["username"]) || empty($_POST["password"]) || empty($_POST["email"])) {
+            $message = '<label>All fields are required</label>';
+        } else {
+            $username = $_POST['username'];
+            // $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
+            $email = $_POST['email'];
+            
+            $user = new Users();
+            $user->insert($username, $email, $password);
+
+            header("location: HomePage.php");
+            exit();
+        }
+    }
+} catch (PDOException $error) {
+    $message = $error->getMessage();
+}
+?>
+ 
 <!DOCTYPE html>  
 <html lang="en">  
 <head>  

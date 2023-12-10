@@ -12,12 +12,14 @@ include("../controller/users.php");
            }  
            else  
            {  
-                $password=$_POST['password'];
+                $password = $_POST['password'];
+                // $password ==password_hash($_POST['password'], PASSWORD_DEFAULT);
                 $email=$_POST['email'];
                 $user =new Users();
                 $res = $user->checkLogin($email, $password);
                 if ($res->rowCount() > 0) {
-                    $_SESSION["username"] = $email; 
+                    $row=$res->fetch(PDO::FETCH_ASSOC);
+                    $_SESSION["username"] = $row['username']; 
                     header("location: HomePage.php");
                     exit();
                 } else {
