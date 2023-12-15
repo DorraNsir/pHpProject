@@ -1,8 +1,8 @@
 <?php
-include("../controller/blogPost.php");
+include("../controller/BlogPostController.php");
 
 if (isset($_POST['sub'])) {
-    $b = new BlogPost();
+    $b = new BlogPostController();
     $id = $_POST['key'];
     $b->delete($id);
 }

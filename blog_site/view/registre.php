@@ -1,5 +1,6 @@
 <?php
-include("../controller/users.php");
+include("../controller/UserController.php");
+include("../model/userModel.php");
 session_start();
 $message = "";
 
@@ -9,12 +10,12 @@ try {
             $message = '<label>All fields are required</label>';
         } else {
             $username = $_POST['username'];
-            // $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
+           $password =$_POST['password']; 
             $email = $_POST['email'];
-            
-            $user = new Users();
-            $user->insert($username, $email, $password);
-
+            $user = new UserController();
+            $userMod = new UserModel($email,$username,$password);
+            $user->insert($userMod);
+            $_SESSION['username'] = $username;
             header("location: HomePage.php");
             exit();
         }
@@ -43,6 +44,13 @@ try {
 <link rel="stylesheet" href="../assets/css/owl.css">
 </head>  
 <body>  
+<div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>  
 <div style="">
     <?php include("./header.php");?>
     </div>
@@ -70,16 +78,31 @@ try {
                         <input type="password" name="password" class="form-control" />  
                     </div>  
  
-                    <!-- <div class="form-group">  
-                        <label for="PC">Password Confirmation </label>  
-                        <input type="password" name="PC" class="form-control" />  
-                    </div>   -->
-
                     <button type="submit" name="login" class="btn btn-primary btn-block">create</button>  
                 </form>  
             </div>  
         </div>  
     </div>  
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Additional Scripts -->
+    <script src="../assets/js/custom.js"></script>
+    <script src="../assets/js/owl.js"></script>
+    <script src="../assets/js/slick.js"></script>
+    <script src="../assets/js/isotope.js"></script>
+    <script src="../assets/js/accordions.js"></script>
+
+    <script language = "text/Javascript"> 
+      cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+      function clearField(t){                   //declaring the array outside of the
+      if(! cleared[t.id]){                      // function makes it static and global
+          cleared[t.id] = 1;  // you could use true and false, but that's more typing
+          t.value='';         // with more chance of typos
+          t.style.color='#fff';
+          }
+      }
+    </script>
 </body>  
 </html>  
 

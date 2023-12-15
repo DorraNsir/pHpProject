@@ -1,6 +1,7 @@
 <?php  
-include("../controller/users.php");
- session_start();  
+include("../controller/UserController.php");
+include("../model/userModel.php");
+session_start();  
  $message = "";  
  try  
  {  
@@ -13,10 +14,10 @@ include("../controller/users.php");
            else  
            {  
                 $password = $_POST['password'];
-                // $password ==password_hash($_POST['password'], PASSWORD_DEFAULT);
                 $email=$_POST['email'];
-                $user =new Users();
-                $res = $user->checkLogin($email, $password);
+                $user = new UserController();
+                $userMod = new UserModel($email,'',$password);
+                $res = $user->checkLogin($userMod);
                 if ($res->rowCount() > 0) {
                     $row=$res->fetch(PDO::FETCH_ASSOC);
                     $_SESSION["username"] = $row['username']; 
